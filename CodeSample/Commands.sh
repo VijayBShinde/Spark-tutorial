@@ -15,20 +15,17 @@ find . -name "*.COMPLETED" -exec sh -c 'mv "$1" "${1%.COMPLETED}"' _ {} \;
 Commands:
 UNIX
 ----------------
-/usr/jcp/mongodb/bin/mongodump --port 27071 --host 10.140.100.49 -u jcpppd -p jcp#1234 -d foresight
+<Mongo_DBPAth>/bin/mongodump --port 27071 --host IP -u user -p pass -d db
 
 cmd: mysql -u root -p 
 root
-sudo chown -R userapp:userapp oracleDump_10_Oct
-scp -r Oracle_dump_07102016/ userapp@10.64.108.70:/usr/jcp/oracleDump_10_Oct
+sudo chown -R username:ownname folder
+scp -r folder user@ip:/Path
 
 ==========================================================================
 
 
-• sed -i -- 's/10.140.78.206/10.140.78.122/g' *
-• sed -i -- 's/jcpprdha/10.140.78.179/g' *
-
-
+• sed -i -- 's/pat1/pat2/g' *
 
 ===========================================================================
 
@@ -52,7 +49,7 @@ hbase-daemon.sh start regionserver
 
 From <http://stackoverflow.com/questions/7309508/hbase-master-not-able-to-start-regionserver> 
 
-This exception occurs because I removed the directory i.e /usr/Vijay/Code/Spark-SQL-on-HBase-master/target/spark-sql-on-hbase-1.0.0.jar
+This exception occurs because I removed the directory i.e /path/spark-sql-on-hbase-1.0.0.jar
 
 Region servers logs
 2017-02-10 20:10:17,164 ERROR [RS_OPEN_META-hadoop-VirtualBox:16201-0] coprocessor.CoprocessorHost: The coprocessor org.apache.spark.sql.hbase.CheckDirEndPointImpl threw java.lang.ClassNotFoundException: org.apache.spark.sql.hbase.CheckDirEndPointImpl
@@ -88,7 +85,7 @@ java.lang.ClassNotFoundException: org.apache.spark.sql.hbase.CheckDirEndPointImp
 
 This issue was came because of When I started to implement Spark-Hbase-SQL implementation, I added one properties in Hbase-env.sh Comment this line in sh file
 # Extra Java CLASSPATH elements.  Optional.
- #export HBASE_CLASSPATH=$HBASE_CLASSPATH:/usr/Vijay/Code/Spark-SQL-on-HBase-master/target/spark-sql-on-hbase-1.0.0.jar
+ #export HBASE_CLASSPATH=$HBASE_CLASSPATH:/path/usr/Vijay/Code/Spark-SQL-on-HBase-master/target/spark-sql-on-hbase-1.0.0.jar
 
 
 
