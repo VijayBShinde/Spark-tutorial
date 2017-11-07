@@ -47,7 +47,7 @@ From <http://stackoverflow.com/questions/14421493/import-text-file-to-hbase-usin
 
 How to count number of rows in a hbase table for particular time interval?
 	hbase org.apache.hadoop.hbase.mapreduce.RowCounter
-		 "AccedianData" 
+		 "tbl_nm" 
 		--starttime=1477333800000 
 		--endtime=1477420199000
 
