@@ -24,3 +24,30 @@ Listing aliases for CredentialProvider: jceks://hdfs@ip/user/hadoopuser/tmp/pass
 oracle.password
 
 hadoop credential delete oracle.password -provider jceks://hdfs@ip/user/hadoopuser/tmp/password.m.jceks
+
+--------------------------------------------
+Incremental migration
+==============================
+
+#!/bin/bash
+DATE=$(date +"%d-%m-%y")
+while IFS=":" read -r server dbname tablename; do
+sqoop import 
+	--connect jdbc:mysql://$server/$dbname 
+	--table $tablename 
+	--username root 
+	--password cloudera 
+	--hive-import 
+	--hive-table dynpart 
+	--hive-partition-key 'thisday' 
+	--hive-partition-value $DATE 
+	--target-dir '/user/hive/newimp5' 
+	--incremental-append 
+	--check-column id 
+	--last-value" $(hive -e "select max(id) from $tablename");
+done < /home//vijay/test.txt
+
+There are two concepts that are in play here :
+
+IFS is the Input Field Separator, which means the string read will be split based on the characters in IFS. 
+On a command line, IFS is normally any whitespace characters, that's why the command line splits at spaces.
