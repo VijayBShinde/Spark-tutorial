@@ -1,0 +1,26 @@
+List tables:
+	- sqoop list-tables --connect jdbc:oracle:thin:user@ip:1521/db --username user -P pass
+Password file
+sqoop list-tables --connect jdbc:oracle:thin:user@ip:1521/db --username user -P pass
+
+echo -n "pass" > pass.txt
+
+- sqoop list-tables --connect jdbc:oracle:thin:user@ip:1521/db --username user --password-file pass.txt
+--------------------------------------------------------------------------------------------------------------------
+
+Encrypted Password SQOOP
+============================= 
+hadoop credential create oracle.password -provider jceks://hdfs@ip/user/hadoopuser/tmp/password.m.jceks
+ 
+sqoop import -Dhadoop.security.credential.provider.path=jceks://hdfs@ip/user/hadoopuser/tmp/password.m.jceks 
+  --verbose --connect jdbc:oracle:thin:user@ip:1521/db --table "tabname" --username user --password-alias oracle.password 
+  --target-dir /hdfs_path -m 1
+
+$ hadoop credential list
+Listing aliases for CredentialProvider: jceks://hdfs@ip/user/hadoopuser/tmp/password.m.jceks
+oracle.password
+$ hadoop credential list -provider jceks://hdfs@ip/user/hadoopuser/tmp/password.m.jceks
+Listing aliases for CredentialProvider: jceks://hdfs@ip/user/hadoopuser/tmp/password.m.jceks
+oracle.password
+
+hadoop credential delete oracle.password -provider jceks://hdfs@ip/user/hadoopuser/tmp/password.m.jceks
