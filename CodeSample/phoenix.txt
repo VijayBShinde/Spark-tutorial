@@ -1,0 +1,28 @@
+	Example
+  
+  1) Create table in HBase
+	create 'emp','cf'
+	2) Then insert some records into table, then create view on top of the table
+	create view "emp" ("rowkey" varchar primary key,"cf"."id" varchar,"cf"."name" varchar);
+   3) Select record from table
+           select * from "emp";
+
+0: jdbc:phoenix:10.140.100.75:2181:/hbase-uns> select * from "emp";
++------------------------------------------+------------------------------------------+------------------------------------------+
+|                  rowkey                  |                    id                    |                   name                   |
++------------------------------------------+------------------------------------------+------------------------------------------+
+| row1                                     | 1                                        | John                                     |
+| row2                                     | 2                                        | Kevin                                    |
++------------------------------------------+------------------------------------------+------------------------------------------+
+2 rows selected (0.297 seconds)
+
+How to export hbase data in CSV format?
+0: jdbc:phoenix:ip:2181:/hbase-uns> !outputformat csv
+0: jdbc:phoenix:ip:2181:/hbase-uns> !record /home/me/data.csv
+Saving all output to "/home/me/data.csv". Enter "record" with no arguments to stop it.
+0: jdbc:phoenix:ip:2181:/hbase-uns> select * from "emp";
+'rowkey','id','name'
+'row1','1','John'
+'row2','2','Kevin'
+2 rows selected (0.016 seconds)
+0: jdbc:phoenix:ip:2181:/hbase-uns> !record
