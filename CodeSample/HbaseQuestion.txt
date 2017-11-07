@@ -1,0 +1,117 @@
+Export HBase data to csv
+How to export hbase data to csv? Table or entire database (table by table). I have always used/built a map/reduce job to do this.  I have also used phoenix to create csv:
+1. >>>>1. !outputformat csv
+2. >>>> 2. !record data.csv
+3. >>>> 3. select * from mytable;
+4. >>>> 4. !record
+5. >>>> 5. !quit
+
+OR
+
+Read with Pig using HBaseStorageHandler and write to PigStorage or CSVExcelStorage
+
+Migrating an Apache Hbase table between different cluster
+https://blog.pivotal.io/pivotal/products/migrating-an-apache-hbase-table-between-different-clusters
+hbase org.apache.hadoop.hbase.mapreduce.CopyTable --peer.adr=<zookeeper_servers_IP_by_comma _seperated>:2181:/hbase-unsecure <Table_Name>
+
+Export
+Export is a utility that will dump the contents of table to HDFS in a sequence file.
+
+bin/hbase org.apache.hadoop.hbase.mapreduce.Export [-D<property> = value …] <tablename> <outputdir> [<versions> [<starttime> [<endtime>]]]
+
+/usr/bin/hbase org.apache.hadoop.hbase.mapreduce.Export -Dmapreduce.output.fileoutputformat.compress=true -Dmapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compress.GzipCodec -Dmapreduce.output.fileoutputformat.compress.type=BLOCK PMHourlySiteKPIData /user/userapp/expoImpo/PMHourlySiteKPIData/ 1 1479321000000 1481912999000
+
+Import
+Import is a utility that will load data that has been exported back into HBase. Invoke via:
+$ bin/hbase org.apache.hadoop.hbase.mapreduce.Import <tablename> <inputdir>
+
+Export Command
+
+Links: 
+Compression : org.apache.hadoop.io.compress.GzipCodec
+
+http://grepcode.com/file/repo1.maven.org/maven2/org.apache.hbase/hbase-server/0.99.0/org/apache/hadoop/hbase/mapreduce/Export.java
+Import Command Link to refer (Source code):
+http://grepcode.com/file/repo1.maven.org/maven2/org.apache.hbase/hbase-server/0.98.9-hadoop2/org/apache/hadoop/hbase/mapreduce/Import.java
+18:06
+ 
+Also If you are using compression technique while Exporting the data, then there is no need to use decompression technique while using import command.
+
+HADOOP_CLASSPATH=`${HBASE_HOME}/bin/hbase /usr/local/hbase/hbase-0.94.4.jar completebulkload \
+/user/vm1/outputfile datatsv
+
+From <http://stackoverflow.com/questions/14421493/import-text-file-to-hbase-using-importtsv> 
+
+
+=============================================================================================================
+
+How to count number of rows in a hbase table for particular time interval?
+	hbase org.apache.hadoop.hbase.mapreduce.RowCounter
+		 "AccedianData" 
+		--starttime=1477333800000 
+		--endtime=1477420199000
+
+
+ hdfs dfs -du -h /apps/hbase/data/data/default
+
+How to export Hbase table?
+
+
+How to take snapshot?
+Snapshot 'table_name' 'snapshotName'
+
+How to query snapshot?
+
+
+How to recover table from snapshot?
+Two ways
+	1) restore_snapshot 'snap_testflume'
+	2)  clone_snapshot 'snap_testflume','testflume'
+	3) list_snapshots
+
+======================================================================
+HBase: Create table with same schema as existing table
+
+From <http://stackoverflow.com/questions/35596976/hbase-create-table-with-same-schema-as-existing-table> 
+
+hbase table copy from one cluster to other
+Is there a way to copy hbase( phoenix) tables from one cluster to the other. If so can anyone tell what is the best option?
+
+From <https://community.hortonworks.com/questions/57049/hbase-table-copy-from-one-cluster-to-other.html> 
+
+Both the mathods "Copytable" and "Import/Export of table" are good for this but they will degrade the performance of regionserver while copying. I would preffer "Snapshot" mathod best for Backup and Recovery.
+Note:- Snapshot method will only work if both cluster are of same version of Hbase. I tried it.
+If your both cluster hbase versions are different then you can use Copytable method.
+Snapshot method,
+Go to hbase-shell and Take a snapshot of table,
+=>hbase shell
+=>snapshot "SOURCE_TABLE_NAME","SNAPSHOT_TABLE_NAME"
+Then you can Export that snapshot to other cluster like,
+=>bin/hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot -snapshot SNAPSHOT_TABLE_NAME -copy-to hdfs://DESTINATION_CLUSTER_ACTIVE_NAMENODE_ADDRESS:8020/hbase -mappers 16
+After this you can restore the table on DESTINATION Cluster as,On Dest_Cluster,
+=>hbase shell
+=>disable "DEST_TABLENAME"
+=>restore_snapshot "SNAPSHOT_TABLE_NAME"
+Done your table will be copied.
+
+==============================================================================
+
+Why to use Hbase?
+
+	- Hbase uses HDFS Its reliable storage, It handles checksums, replication & failover.
+	- Native Java API
+	- Master manages cluster & region servers manages the data.
+	- Zookeeper uses the neural network. Coordinate cluster
+Auto sharding
+
+Distrbution
+
+Storage separation
+	- Column families allows for separation of data.
+		○ Used by columnar database for fast analytics queries, but on column level.
+		○ Allows different OR no compression depending upon content type.
+	- Segregate information based on access pattern(How you query on DB)
+	- Data is stored in one OR more storage file, Called Hfiles.
+
+	Blumefilter, Memstore aggregatin & flushing - compaction(background process)
+
