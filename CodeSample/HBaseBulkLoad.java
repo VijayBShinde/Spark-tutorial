@@ -23,7 +23,7 @@ import org.apache.hadoop.util.ToolRunner;
  * 
  * @author hadoop
  *
- *	Usage $yarn jar MRBulkLoad2.jar com.ril.example.bulkdataload.HBaseBulkLoad /user/userapp/vijay/sample.json /user/userapp/vijay/MRBulkLoad emptest
+ *	Usage $yarn jar MRBulkLoad2.jar com.ril.example.bulkdataload.HBaseBulkLoad /vijay/sample.json /vijay/MRBulkLoad emptest
  *   yarn jar MRBulkLoad2.jar com.ril.example.bulkdataload.HBaseBulkLoad hdfs://localhost:9000/data/sample.csv hdfs://localhost:9000/data/BulkLoad/Out emptest
  */
 public class HBaseBulkLoad extends Configured implements Tool{
